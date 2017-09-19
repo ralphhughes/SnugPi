@@ -15,10 +15,10 @@ var objDate = new Date();
 // the unix epoch
 function timeToMillis(hours, minutes) {
 	var objDate = new Date();
-	return Date.UTC(objDate.getUTCFullYear(),objDate.getUTCMonth(),objDate.getUTCDate(),hours,minutes);
+	return Date.UTC(objDate.getFullYear(),objDate.getMonth(),objDate.getDate(),hours,minutes);
 	
 }
-
+/*
 var scheduled_temps = [
 		[timeToMillis(0,0),0],		// Start of day
 		
@@ -31,7 +31,7 @@ var scheduled_temps = [
 		
 		[timeToMillis(24,0),0],	// End of day
     ];
-
+*/
 function fakeDate() {
 	for (var hours=0; hours < objDate.getUTCHours(); hours++) {
 		
@@ -53,11 +53,15 @@ var inside_temps = [
 ];
 
 //var outside_temps = fakeData();	
-	
+function pointClick() {
+    if (this.series.name === 'Scheduled') {
+        alert('x: ' + new Date(this.x) + ', value: ' + this.y);
+    }
+}	
 $(function () {
 	Highcharts.setOptions({                                            // This is for all plots, change Date axis to local timezone
 		global : {
-			useUTC : false
+			useUTC : true
 		}
 	});
 
@@ -68,27 +72,44 @@ $(function () {
     credits: false,
     xAxis: {
         type: 'datetime',
-        tickInterval: 3600 * 1000,
+        //tickInterval: 3600 * 1000,
         min: Date.UTC(objDate.getUTCFullYear(),objDate.getUTCMonth(),objDate.getUTCDate(),0,0),
-        max: Date.UTC(objDate.getUTCFullYear(),objDate.getUTCMonth(),objDate.getUTCDate(),24,0),
+        max: Date.UTC(objDate.getUTCFullYear(),objDate.getUTCMonth(),objDate.getUTCDate(),24,0)
     },
 
     yAxis: {
         title: {
             text: null
+        },
+        min: 10,
+        max: 30,
+        tickInterval: 5,
+        labels: {
+            format: '{value}°C'           
         }
     },
-
+    
     tooltip: {
         crosshairs: true,
         shared: false,
         valueSuffix: '°C',
-		xDateFormat: '%H:%M',
+		xDateFormat: '%H:%M'
     },
 
     legend: {
     },
-
+    
+    plotOptions: {
+        series: {
+            cursor: 'pointer',
+            point: {
+                events: {
+                    click: pointClick
+                }
+            }
+        }
+    },
+    
     series: [{
         name: 'Inside Temp',
         data: inside_temps,
@@ -117,8 +138,16 @@ $(function () {
 </head>
 
 <body>
-<table>
-    <tr><td>Today</td><td><div id="container" style="height: 300px"></div></td></tr>
-    <tr><td>Yesterday</td><td><div id="container" style="height: 300px"></div></td></tr>
+    <table>
+        <tr>
+            <td>Today</td>
+            <td><div id="container" style="height: 300px"></div></td>
+            <td><input type="button" value="Add set temp\time"></td>
+        </tr>
+        <tr>
+            <td>Tomorrow</td>
+            <td><div id="container" style="height: 300px"></div></td>
+        
+        </tr>
 
 </table>
