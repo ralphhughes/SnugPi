@@ -1,4 +1,5 @@
 <?php
+error_reporting(-1);
 function openDB() {
     try{    
         //open the database
@@ -92,4 +93,20 @@ function insertDefaultConfig($con) {
     $con->exec($insertDefaultScheduleSQL);
     
 
+}
+
+
+//--------------------------------------------
+
+function getSetbackTemp($con) {
+    $heaterRelayPinSQL = "select value as value from config where key='setbackTemp';";
+    $result = $con->query($heaterRelayPinSQL);
+    $result->setFetchMode(PDO::FETCH_ASSOC);
+    $row = $result->fetch();
+    return $row['value'];
+}
+
+
+function getCurrentDayOfWeek() {
+    return date('w');
 }

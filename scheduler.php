@@ -45,21 +45,11 @@ function deleteTodaysExpiredBoostSchedules($con, $dayOfWeek, $timeOfDay) {
     
 }
 
-function getCurrentDayOfWeek() {
-    return date('w');
-}
 
 function getCurrentTimeOfDay() {
     return (int)((time() - strtotime("today")) / 60);
 }
 
-function getSetbackTemp($con) {
-    $heaterRelayPinSQL = "select value as value from config where key='setbackTemp';";
-    $result = $con->query($heaterRelayPinSQL);
-    $result->setFetchMode(PDO::FETCH_ASSOC);
-    $row = $result->fetch();
-    return $row['value'];
-}
 
 function getDesiredTempFor($con, $dayOfWeek, $timeOfDay) {
     $getScheduleSQL = "select max(desiredTemp) as desiredTemp from schedule where dayOfWeek='". $dayOfWeek 
