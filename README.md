@@ -9,12 +9,20 @@ This is yet another Raspberry Pi thermostat as I wasn't happy with the cost\comp
 ## Installation instructions
 
 ###### Install dependencies
-`sudo apt-get install nginx php git etc`
+`sudo apt-get install git nginx php5-fpm sqlite3 php5-sqlite`
+
+
+###### Setup nginx
+[https://www.raspberrypi.org/documentation/remote-access/web-server/nginx.md](Follow this raspberry pi official doc)
+
+`sudo nano /etc/nginx/sites-enabled/default`
+Add `index.php` after `index`
+Uncomment `location .php {` section
 
 ###### Install code
 `cd /var/www`
 
-`git clone ralphhughes/SnugPi`
+`git clone https://github.com/ralphhughes/SnugPi.git`
 
 ###### Browse to the web interface
 
